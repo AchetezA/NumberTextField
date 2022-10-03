@@ -104,6 +104,8 @@ public extension NumberTextField.Coordinator {
             self.updateValue(textField)
             self.updateText(textField, decimal: self.parent.value)
             
+            self.parent.onUpdate?(self.parent.value)
+            
             /// Check if cursor is within bounds.
             if let range = textField.selectedTextRange?.start {
                 let cursorPosition = textField.offset(from: textField.beginningOfDocument, to: range)
@@ -122,7 +124,7 @@ public extension NumberTextField.Coordinator {
             self.parent.formatter.alwaysShowsDecimalSeparator = false
             
             self.updateText(textField, decimal: self.parent.value)
-            self.parent.onCommit(self.parent.value)
+            self.parent.onCommit?(self.parent.value)
         }
     }
     

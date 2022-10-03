@@ -7,37 +7,40 @@
 
 import SwiftUI
 import UIKit
+import Combine
 
 // MARK: - Number Text Field
 
 public struct NumberTextField: UIViewRepresentable {
+    public typealias OnUpdate = (Decimal?) -> ()
+    public typealias OnCommit = (Decimal?) -> ()
     
     /// The number formatter used for formatting the text field and value.
     internal var formatter: NumberFormatter
     
     /// The placeholder text that appears when the text field is empty.
     internal var placeholder: String
-    
+
     /// The underlying value of the text field.
     @Binding public var value: Decimal?
     
     /// Boolean representing if the text field is first responder.
     @Binding public var isActive: Bool
-    
+
     /// A method called when the number text field has commited its input.
-    public var onCommit: (Decimal?) -> ()
-    
+    public var onUpdate: OnUpdate? = nil
+    public var onCommit: OnCommit? = nil
     
     // MARK: - Init
     
-    public init(placeholder: String, value: Binding<Decimal?>, formatter: NumberFormatter, isActive: Binding<Bool>, onCommit: @escaping (Decimal?) -> ()) {
+    public init(placeholder: String, value: Binding<Decimal?>, formatter: NumberFormatter, isActive: Binding<Bool>, onUpdate: OnUpdate? = nil, onCommit: OnCommit? = nil) {
         self.placeholder = placeholder
         self._value = value
         self.formatter = formatter
         self._isActive = isActive
+        self.onUpdate = onUpdate
         self.onCommit = onCommit
     }
-    
     
     // MARK: - Make
     
